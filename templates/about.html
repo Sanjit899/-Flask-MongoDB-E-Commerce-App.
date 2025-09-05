@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>About Us</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background: #f5f6fa;
+            color: #333;
+        }
+        nav {
+            background: #2f3640;
+            padding: 15px 20px;
+            text-align: center;
+        }
+        nav a {
+            color: #f5f6fa;
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        nav a:hover { color: #00a8ff; }
+        .hero {
+            background: url('{{ url_for("static", filename="images/about-hero.jpg") }}') no-repeat center center/cover;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 36px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+        }
+        .content {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+        .content p { font-size: 18px; line-height: 1.6; margin-bottom: 30px; }
+        .cards-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 50px;
+        }
+        .card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            width: 250px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        .card img { width: 80px; height: 80px; margin-bottom: 15px; border-radius: 50%; object-fit: cover; }
+        .card h3 { margin: 10px 0 5px; color: #2f3640; }
+        .card p { font-size: 14px; color: #555; }
+        .team-section {
+            max-width: 1000px;
+            margin: 0 auto 50px;
+            text-align: center;
+        }
+        .team-section h2 { margin-bottom: 30px; color: #2f3640; }
+        .team-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+        }
+        .team-member {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            width: 200px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .team-member:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        .team-member img { width: 120px; height: 120px; border-radius: 50%; margin-bottom: 10px; object-fit: cover; }
+        .team-member h4 { margin: 10px 0 5px; color: #2f3640; }
+        .team-member p { font-size: 14px; color: #555; margin-bottom: 10px; }
+        .team-member a {
+            text-decoration: none;
+            margin: 0 5px;
+            color: #00a8ff;
+            font-size: 16px;
+            transition: color 0.3s;
+        }
+        .team-member a:hover { color: #0097e6; }
+        @media (max-width: 600px) {
+            .cards-container, .team-container { flex-direction: column; align-items: center; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="/">Home</a> |
+    <a href="/about">About</a> |
+    <a href="/services">Services</a> |
+    <a href="/products">Products</a> |
+    <a href="/cart">Cart</a> |
+    <a href="/contact">Contact</a> |
+    <a href="/complaints">Complaints</a> |
+    <a href="/add_products">Add Products</a> |
+    <a href="/admin">Admin</a>
+</nav>
+
+<div class="hero">About Our Company</div>
+
+<div class="content">
+    <p>Welcome to our E-Commerce platform. We provide quality products at affordable prices. Our mission is to deliver the best online shopping experience with reliability and trust.</p>
+</div>
+
+<div class="cards-container">
+    <div class="card">
+        <img src="{{ url_for('static', filename='images/about1.png') }}" alt="Mission">
+        <h3>Our Mission</h3>
+        <p>Provide top-quality products with fast delivery and excellent service.</p>
+    </div>
+    <div class="card">
+        <img src="{{ url_for('static', filename='images/vision.jpg') }}" alt="Vision">
+        <h3>Our Vision</h3>
+        <p>Become the leading online marketplace known for reliability and trust.</p>
+    </div>
+    <div class="card">
+        <img src="{{ url_for('static', filename='images/value.png') }}" alt="Values">
+        <h3>Our Values</h3>
+        <p>Integrity, transparency, customer-centric approach, and continuous improvement.</p>
+    </div>
+</div>
+
+<div class="team-section">
+    <h2>Meet Our Team</h2>
+    <div class="team-container">
+        <div class="team-member">
+            <img src="{{ url_for('static', filename='images/team1.png') }}" alt="Team Member">
+            <h4>John Doe</h4>
+            <p>CEO</p>
+            <div>
+                <a href="#"><i class="fab fa-facebook-f"></i>FB</a>
+                <a href="#"><i class="fab fa-twitter"></i>TW</a>
+            </div>
+        </div>
+        <div class="team-member">
+            <img src="{{ url_for('static', filename='images/team2.png') }}" alt="Team Member">
+            <h4>Jane Smith</h4>
+            <p>COO</p>
+            <div>
+                <a href="#"><i class="fab fa-facebook-f"></i>FB</a>
+                <a href="#"><i class="fab fa-twitter"></i>TW</a>
+            </div>
+        </div>
+        <div class="team-member">
+            <img src="{{ url_for('static', filename='images/team3.png') }}" alt="Team Member">
+            <h4>Mike Johnson</h4>
+            <p>CTO</p>
+            <div>
+                <a href="#"><i class="fab fa-facebook-f"></i>FB</a>
+                <a href="#"><i class="fab fa-twitter"></i>TW</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Font Awesome for social icons -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+</body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home - E-Commerce</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background: #f5f6fa;
+            color: #333;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #2f3640;
+        }
+        nav {
+            background: #2f3640;
+            padding: 15px 20px;
+            text-align: center;
+        }
+        nav a {
+            color: #f5f6fa;
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        nav a:hover {
+            color: #00a8ff;
+        }
+        hr {
+            margin: 20px auto;
+            width: 90%;
+        }
+        .products-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px auto 50px;
+            max-width: 1200px;
+        }
+        .product-card {
+            background: #fff;
+            width: 250px;
+            border-radius: 10px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+        .product-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+        .product-card h3 {
+            margin: 10px 0 5px;
+        }
+        .product-card p {
+            font-size: 14px;
+            margin: 5px 10px;
+            min-height: 40px;
+        }
+        .product-card .price {
+            font-weight: bold;
+            margin: 5px 0;
+        }
+        .product-card input[type="number"] {
+            width: 60px;
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+        .product-card button {
+            padding: 8px 15px;
+            border: none;
+            background: #00a8ff;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 10px;
+            transition: background 0.3s;
+        }
+        .product-card button:hover {
+            background: #0097e6;
+        }
+        .flash-message {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 15px;
+            background: #dff9fb;
+            border-left: 5px solid #00a8ff;
+            border-radius: 5px;
+        }
+        .cart-btn {
+            display: block;
+            text-align: center;
+            margin: 20px auto;
+            padding: 12px 25px;
+            background: #00a8ff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 500;
+        }
+        .cart-btn:hover {
+            background: #0097e6;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Welcome to E-Commerce</h1>
+
+<!-- Navigation -->
+<nav>
+    <a href="/">Home</a> |
+    <a href="/about">About</a> |
+    <a href="/services">Services</a> |
+    <a href="/products">Products</a> |
+    <a href="/cart">Cart</a> |
+    <a href="/orders">Orders</a> |
+    <a href="/payment">Payment</a> |
+    <a href="/contact">Contact</a> |
+    <a href="/complaints">Complaints</a> |
+    <a href="/add_products">Add Products</a> |
+    <a href="/admin">Admin</a> |
+    <a href="/login">Login</a> |
+    <a href="/register">Register</a>
+</nav>
+
+
+<hr>
+
+<h2>Available Products</h2>
+
+<!-- Flash messages -->
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div class="flash-message">
+    {% for message in messages %}
+      <p>{{ message }}</p>
+    {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+<!-- Products Grid -->
+<div class="products-container">
+    {% for product in products %}
+    <div class="product-card">
+        <img src="{{ url_for('static', filename='images/' + product.get('image','default.jpg')) }}" alt="{{ product.get('name','No Name') }}">
+        <h3>{{ product.get('name','No Name') }}</h3>
+        <p>{{ product.get('description','No Description') }}</p>
+        <div class="price">₹{{ product.get('price',0) }}</div>
+        <input type="number" id="qty-{{ product.get('_id') }}" value="1" min="1">
+        <button onclick="addToCart('{{ product.get('_id') }}', '{{ product.get('name','No Name') }}', {{ product.get('price',0) }})">Add to Cart</button>
+    </div>
+    {% endfor %}
+</div>
+
+<a href="/cart" class="cart-btn">Go to Cart</a>
+
+<script>
+    let cart = [];
+
+    function addToCart(id, name, price) {
+        const qty = parseInt(document.getElementById('qty-' + id).value);
+        if(qty < 1) return;
+
+        const existing = cart.find(item => item.id === id);
+        if(existing) {
+            existing.qty += qty;
+        } else {
+            cart.push({id, name, price, qty});
+        }
+
+        fetch('/add_to_cart', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({id, name, price, qty})
+        }).then(res => res.json())
+          .then(data => alert(data.message))
+          .catch(err => console.error(err));
+    }
+</script>
+
+</body>
+</html>

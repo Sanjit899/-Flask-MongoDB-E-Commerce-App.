@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Register - E-commerce</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background: #f5f6fa;
+      color: #333;
+    }
+    nav {
+      background: #2f3640;
+      padding: 15px 20px;
+      text-align: center;
+    }
+    nav a {
+      color: #f5f6fa;
+      text-decoration: none;
+      margin: 0 10px;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+    nav a:hover {
+      color: #00a8ff;
+    }
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 90vh;
+    }
+    .form-box {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+      width: 400px;
+      text-align: center;
+    }
+    .form-box img {
+      width: 80px;
+      margin-bottom: 15px;
+    }
+    .form-box h2 {
+      margin-bottom: 20px;
+      color: #2f3640;
+    }
+    .form-box input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+    .form-box button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      background: #00a8ff;
+      color: white;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background 0.3s;
+    }
+    .form-box button:hover {
+      background: #0097e6;
+    }
+    .form-box p {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+    .form-box a {
+      color: #00a8ff;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="/">Home</a> |
+  <a href="/about">About</a> |
+  <a href="/services">Services</a> |
+  <a href="/products">Products</a> |
+  <a href="/cart">Cart</a> |
+  <a href="/contact">Contact</a>
+</nav>
+
+<div class="container">
+  <div class="form-box">
+    <img src="{{ url_for('static', filename='images/register_icon.png') }}" alt="Register">
+    <h2>Create Account</h2>
+    <form method="POST" action="/register">
+      <input type="text" name="name" placeholder="Full Name" required>
+      <input type="email" name="email" placeholder="Email" required>
+      <input type="password" name="password" placeholder="Password" required>
+      <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+      <button type="submit">Register</button>
+    </form>
+    <p>Already have an account? <a href="/login">Login</a></p>
+  </div>
+</div>
+</body>
+</html>

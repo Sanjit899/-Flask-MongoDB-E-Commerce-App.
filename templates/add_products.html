@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Product</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background: #f5f6fa;
+            color: #333;
+        }
+        nav {
+            background: #2f3640;
+            padding: 15px 20px;
+            text-align: center;
+        }
+        nav a {
+            color: #f5f6fa;
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        nav a:hover {
+            color: #00a8ff;
+        }
+        h1 {
+            text-align: center;
+            margin: 30px 0;
+            color: #2f3640;
+        }
+        form {
+            max-width: 500px;
+            margin: 0 auto 50px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+        }
+        label {
+            font-weight: 500;
+        }
+        input[type="text"], input[type="number"], textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0 15px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+        textarea {
+            resize: vertical;
+        }
+        input[type="file"] {
+            margin: 10px 0 15px 0;
+        }
+        button[type="submit"] {
+            background: #00a8ff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button[type="submit"]:hover {
+            background: #0097e6;
+        }
+        .preview-img {
+            display: block;
+            margin: 10px auto;
+            max-width: 150px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        ul.messages {
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 10px;
+            background: #dff9fb;
+            border: 1px solid #00a8ff;
+            border-radius: 5px;
+            list-style: none;
+        }
+        ul.messages li {
+            padding: 5px 0;
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="/">Home</a> |
+    <a href="/about">About</a> |
+    <a href="/services">Services</a> |
+    <a href="/products">Products</a> |
+    <a href="/cart">Cart</a> |
+    <a href="/contact">Contact</a> |
+    <a href="/complaints">Complaints</a> |
+    <a href="/add_products">Add Products</a> |
+    <a href="/admin">Admin</a>
+</nav>
+
+<h1>Add New Product</h1>
+
+<form method="POST" enctype="multipart/form-data">
+    <label>Product Name:</label><br>
+    <input type="text" name="name" required><br>
+
+    <label>Price:</label><br>
+    <input type="number" step="0.01" name="price" required><br>
+
+    <label>Description:</label><br>
+    <textarea name="description" required></textarea><br>
+
+    <label>Product Image:</label><br>
+    <input type="file" name="image" accept="image/*" onchange="previewImage(event)" required><br>
+    <img id="imagePreview" class="preview-img" src="#" alt="Image Preview" style="display:none;"><br>
+
+    <button type="submit">Add Product</button>
+</form>
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class="messages">
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
+<script>
+    function previewImage(event) {
+        const input = event.target;
+        const preview = document.getElementById('imagePreview');
+        if(input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            }
+            reader.readAsDataURL(input.files[0]);
+        } else {
+            preview.src = '#';
+            preview.style.display = 'none';
+        }
+    }
+</script>
+
+</body>
+</html>

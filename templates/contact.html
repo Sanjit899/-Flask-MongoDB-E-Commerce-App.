@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Contact Us</title>
+    <!-- CSS Reset and Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        /* General Styles */
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background: #f5f6fa;
+            color: #333;
+        }
+        nav {
+            background: #2f3640;
+            padding: 15px 20px;
+            text-align: center;
+        }
+        nav a {
+            color: #f5f6fa;
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        nav a:hover {
+            color: #00a8ff;
+        }
+        h1 {
+            text-align: center;
+            margin-top: 30px;
+            color: #2f3640;
+        }
+        form {
+            max-width: 600px;
+            margin: 30px auto;
+            background: #fff;
+            padding: 25px 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        label {
+            display: block;
+            margin: 15px 0 5px;
+            font-weight: 500;
+        }
+        input[type="text"], input[type="email"], textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #dcdde1;
+            border-radius: 5px;
+            font-size: 16px;
+            resize: vertical;
+        }
+        textarea {
+            min-height: 120px;
+        }
+        button {
+            display: inline-block;
+            background: #00a8ff;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 15px;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #0097e6;
+        }
+        /* Flash message styling */
+        ul {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 0;
+            list-style: none;
+        }
+        ul li {
+            background: #dff9fb;
+            border-left: 4px solid #00a8ff;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        /* Image container */
+        .contact-img {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .contact-img img {
+            max-width: 200px;
+            border-radius: 50%;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        .contact-img img:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <a href="/">Home</a> |
+        <a href="/about">About</a> |
+        <a href="/services">Services</a> |
+        <a href="/products">Products</a> |
+        <a href="/cart">Cart</a> |
+        <a href="/contact">Contact</a> |
+        <a href="/complaints">Complaints</a> |
+        <a href="/add_products">Add Products</a> |
+        <a href="/admin">Admin</a>
+    </nav>
+
+    <h1>Contact Us</h1>
+
+    <!-- Image -->
+    <div class="contact-img">
+        <img src="{{ url_for('static', filename='images/contact.png') }}" alt="Contact">
+    </div>
+
+    <!-- Contact Form -->
+    <form id="contactForm" method="POST">
+        <label for="name">Name:</label>
+        <input type="text" name="name" id="name" required>
+
+        <label for="email">Email:</label>
+        <input type="email" name="email" id="email" required>
+
+        <label for="message">Message:</label>
+        <textarea name="message" id="message" required></textarea>
+
+        <button type="submit">Send Message</button>
+    </form>
+
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <!-- JavaScript -->
+    <script>
+        const form = document.getElementById('contactForm');
+
+        form.addEventListener('submit', function(event) {
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const message = document.getElementById('message').value.trim();
+
+            if(name === '' || email === '' || message === '') {
+                alert('Please fill all fields!');
+                event.preventDefault();
+            } else {
+                alert('Your message has been sent successfully!');
+            }
+        });
+    </script>
+
+</body>
+</html>

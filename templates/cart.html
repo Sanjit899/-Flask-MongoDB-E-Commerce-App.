@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Cart</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background: #f5f6fa;
+            color: #333;
+        }
+        nav {
+            background: #2f3640;
+            padding: 15px 20px;
+            text-align: center;
+        }
+        nav a {
+            color: #f5f6fa;
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        nav a:hover {
+            color: #00a8ff;
+        }
+        h1 {
+            text-align: center;
+            margin: 30px 0;
+            color: #2f3640;
+        }
+        .cart-container {
+            max-width: 900px;
+            margin: 0 auto 50px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+        }
+        .cart-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .cart-table th, .cart-table td {
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #dcdde1;
+        }
+        .cart-table th {
+            background: #00a8ff;
+            color: #fff;
+        }
+        .cart-table input[type="number"] {
+            width: 60px;
+            padding: 5px;
+        }
+        .cart-total {
+            text-align: right;
+            margin-top: 15px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .place-order-btn {
+            display: block;
+            margin: 20px auto 0;
+            padding: 12px 25px;
+            border: none;
+            background: #00a8ff;
+            color: #fff;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .place-order-btn:hover {
+            background: #0097e6;
+        }
+        .remove-btn {
+            padding: 5px 10px;
+            background: #e84118;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .remove-btn:hover {
+            background: #c23616;
+        }
+        .cart-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 5px;
+            object-fit: cover;
+        }
+        /* Toast notification */
+        #toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #00a8ff;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            display: none;
+            z-index: 9999;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="/">Home</a> |
+    <a href="/about">About</a> |
+    <a href="/services">Services</a> |
+    <a href="/products">Products</a> |
+    <a href="/cart">Cart</a> |
+    <a href="/contact">Contact</a> |
+    <a href="/complaints">Complaints</a> |
+    <a href="/add_products">Add Products</a> |
+    <a href="/admin">Admin</a>
+</nav>
+
+<h1>Your Cart</h1>
+
+<div class="cart-container">
+    <table class="cart-table" id="cartTable">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Image</th>
+                <th>Price (₹)</th>
+                <th>Quantity</th>
+                <th>Total (₹)</th>
+                <th>Remove</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Cart items dynamically inserted -->
+        </tbody>
+    </table>
+    <div class="cart-total" id="cartTotal">Total: ₹0</div>
+    <button class="place-order-btn" onclick="placeOrder()">Place Order</button>
+</div>
+
+<div id="toast"></div>
+
+<script>
+    function showToast(message) {
+        const toast = document.getElementById('toast');
+        toast.innerText = message;
+        toast.style.display = 'block';
+        setTimeout(() => toast.style.display = 'none', 2500);
+    }
+
+    async function loadCart() {
+        try {
+            const response = await fetch('/cart_data'); // Returns session cart JSON
+            const cart = await response.json();
+            renderCart(cart);
+        } catch (err) {
+            showToast('Error loading cart');
+            console.error(err);
+        }
+    }
+
+    function renderCart(cart) {
+        const tbody = document.querySelector('#cartTable tbody');
+        tbody.innerHTML = '';
+        let total = 0;
+        cart.forEach((item, index) => {
+            const itemTotal = item.price * item.qty;
+            total += itemTotal;
+
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${item.name}</td>
+                <td><img src="${item.image}" class="cart-img"></td>
+                <td>${item.price.toFixed(2)}</td>
+                <td><input type="number" min="1" value="${item.qty}" onchange="updateQty('${item.id}', this.value)"></td>
+                <td>${itemTotal.toFixed(2)}</td>
+                <td><button class="remove-btn" onclick="removeFromCart('${item.id}')">X</button></td>
+            `;
+            tbody.appendChild(row);
+        });
+        document.getElementById('cartTotal').innerText = 'Total: ₹' + total.toLocaleString('en-IN');
+    }
+
+    async function updateQty(id, value) {
+        const qty = parseInt(value);
+        if(qty < 1) {
+            showToast('Quantity must be at least 1');
+            return;
+        }
+        try {
+            await fetch('/update_cart', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({id, qty})
+            });
+            loadCart();
+        } catch (err) {
+            showToast('Error updating quantity');
+            console.error(err);
+        }
+    }
+
+    async function removeFromCart(id) {
+        try {
+            await fetch('/remove_from_cart', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({id})
+            });
+            loadCart();
+        } catch (err) {
+            showToast('Error removing item');
+            console.error(err);
+        }
+    }
+
+    async function placeOrder() {
+        try {
+            const response = await fetch('/place_order', {method: 'POST'});
+            const data = await response.json();
+            showToast(data.message);
+            loadCart();
+        } catch (err) {
+            showToast('Error placing order');
+            console.error(err);
+        }
+    }
+
+    // Load cart on page load
+    loadCart();
+</script>
+
+</body>
+</html>

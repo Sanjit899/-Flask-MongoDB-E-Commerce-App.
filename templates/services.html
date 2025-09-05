@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Services</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background: #f5f6fa;
+            color: #333;
+        }
+        nav {
+            background: #2f3640;
+            padding: 15px 20px;
+            text-align: center;
+        }
+        nav a {
+            color: #f5f6fa;
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        nav a:hover {
+            color: #00a8ff;
+        }
+        h1 {
+            text-align: center;
+            margin: 30px 0;
+            color: #2f3640;
+        }
+        .services-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto 50px;
+            padding: 0 10px;
+        }
+        .service-card {
+            background: #fff;
+            border-radius: 10px;
+            width: 220px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        .service-card img {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 15px;
+        }
+        .service-card h3 {
+            margin: 10px 0 5px;
+            font-size: 18px;
+            color: #2f3640;
+        }
+        .service-card p {
+            font-size: 14px;
+            color: #555;
+        }
+        @media (max-width: 600px) {
+            .services-container {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="/">Home</a> |
+    <a href="/about">About</a> |
+    <a href="/services">Services</a> |
+    <a href="/products">Products</a> |
+    <a href="/cart">Cart</a> |
+    <a href="/contact">Contact</a> |
+    <a href="/complaints">Complaints</a> |
+    <a href="/add_products">Add Products</a> |
+    <a href="/admin">Admin</a>
+</nav>
+
+<h1>Our Services</h1>
+
+<div class="services-container">
+    <div class="service-card">
+        <img src="{{ url_for('static', filename='images/fast1.png') }}" alt="Fast Delivery">
+        <h3>Fast Delivery</h3>
+        <p>Get your products delivered quickly and safely.</p>
+    </div>
+    <div class="service-card">
+        <img src="{{ url_for('static', filename='images/support.png') }}" alt="24/7 Support">
+        <h3>24/7 Customer Support</h3>
+        <p>Our support team is available anytime for your queries.</p>
+    </div>
+    <div class="service-card">
+        <img src="{{ url_for('static', filename='images/return.png') }}" alt="Easy Returns">
+        <h3>Easy Returns</h3>
+        <p>Hassle-free returns within 30 days of purchase.</p>
+    </div>
+    <div class="service-card">
+        <img src="{{ url_for('static', filename='images/payment.png') }}" alt="Secure Payment">
+        <h3>Secure Payment</h3>
+        <p>Safe and multiple payment options available.</p>
+    </div>
+</div>
+
+</body>
+</html>
